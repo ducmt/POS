@@ -33,7 +33,14 @@
   <div class="card">
     <div class="card-body">
       <h2 class="text-uppercase text-thin">Member</h2>
-      <div id="chart"></div>
+      <canvas id="chart-sample"></canvas>
+    </div>
+  </div>
+
+  <div class="card" *ngFor="let chart of charts; let i = index">
+    <div class="card-body">
+      <h2 class="text-uppercase text-thin">{{ chart.title }}</h2>
+      <canvas [id]="'chart-' + i"></canvas>
     </div>
   </div>
 </div>

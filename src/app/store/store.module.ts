@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { dataReducer } from '../store/reducers/data.reducer';
+import { dataReducer, chartReducer } from '../store/reducers';
 import { StoreModule } from '@ngrx/store';
 
 const reducers = {
-  data: dataReducer
+  data: dataReducer,
+  charts: chartReducer
 };
 
 @NgModule({

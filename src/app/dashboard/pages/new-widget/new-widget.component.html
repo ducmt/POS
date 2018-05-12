@@ -45,7 +45,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4">
-      <form class="card" [formGroup]="chartForm">
+      <div class="card" [formGroup]="chartForm">
         <div class="card-body">
           <div class="form-group">
             <label>Title</label>
@@ -54,7 +54,11 @@
 
           <div class="form-group">
             <label>Y Axis</label>
-            <select class="form-control" (change)="changeInput($event)">
+            <select
+              class="form-control"
+              (change)="changeInput($event)"
+              formControlName="yAxis"
+            >
               <option value="points">Point</option>
               <option value="orderAmount">Order amount</option>
               <option value="amount">Amount</option>
@@ -75,9 +79,9 @@
                   <input
                     type="checkbox"
                     class="custom-control-input"
-                    (change)="toggleOutput(item[output], i)"
+                    (change)="toggleOutput(item[output], i, item[outputText])"
                     [value]="item[output]"
-                    [checked]="selectedOutputs.indexOf(item[output]) !== -1"
+                    [checked]="isChecked(item[output])"
                   />
                   <span class="custom-control-label">{{ item[outputText] }}</span>
                 </label>
@@ -86,12 +90,19 @@
           </div>
         </div>
         <div class="card-footer d-flex">
-          <button class="btn" style="width: 40%">Cancel</button>
-          <button class="btn btn-primary ml-auto">
+          <button
+            class="btn"
+            style="width: 40%"
+            (click)="cancel()"
+          >Cancel</button>
+          <button
+            class="btn btn-primary ml-auto"
+            (click)="addChart()"
+          >
             <i class="fe fe-plus"></i> Add to Dashboard
           </button>
         </div>
-      </form>
+      </div>
     </div>
     <div class="col-md-8">
       <div class="card">

@@ -23,11 +23,14 @@ export class AnalysisService {
   parseData(output, fields, input, chartTexts) {
     let exportData: any = {};
     for (const field of fields) {
-      exportData[field] = new Array(12).fill(0);
+      exportData[field.value] = new Array(12).fill(0);
     }
 
     for (const item of this.data) {
-      if (fields.indexOf(item[output]) !== -1 && item.transactionDate) {
+      if (
+        fields.findIndex(field => field.value === item[output]) !== -1
+        && item.transactionDate
+      ) {
         const month = new Date(item.transactionDate).getMonth();
         exportData[item[output]][month] += item[input];
       }
@@ -44,6 +47,34 @@ export class AnalysisService {
     }
 
     return exportData;
+  }
+
+  getDatasets(input, output, fields) {
+    const datasets = {};
+    for (let i = 0; i < fields.length; i++) {
+      const item: any = {
+        label: fields[i].text,
+        fill: false,
+        backgroundColor: color[i],
+        borderColor: color[i],
+        data: new Array(12).fill(0)
+      };
+      datasets[fields[i].value] = item;
+    }
+
+    for (const item of this.data) {
+      if (
+        fields.findIndex(field => field.value === item[output]) !== -1
+        && item.transactionDate
+      ) {
+        const month = new Date(item.transactionDate).getMonth();
+        datasets[item[output]].data[month] += item[input];
+      }
+    }
+
+    return Object.keys(datasets).map(key => {
+      return datasets[key];
+    });
   }
 
   getStatistic(output, field, input) {

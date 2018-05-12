@@ -6,6 +6,7 @@ $(document).ready(function() {
 });
 
 function drawChart(target, options) {
+  console.log(target);
   const ctx = document.getElementById(target).getContext('2d');
   var chart = new Chart(ctx, options);
   return chart;

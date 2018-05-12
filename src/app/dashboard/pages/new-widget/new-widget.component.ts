@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { DataService, AnalysisService } from '../../services';
 import { data as fields } from '@app/const/data';
 import { color } from '@app/const/color';
+import { Router } from '@angular/router';
+import { AddChart } from '@app/store/actions';
 
 @Component({
   selector: 'app-new-widget',
@@ -28,13 +30,14 @@ export class NewWidgetComponent implements OnInit {
 
   outputText = '';
 
-  input = 'points';
-
   labels = ['Jan', 'Fed', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   chart = null;
 
+  get yAxis() { return this.chartForm.get('yAxis'); }
+
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private store: Store<AppState>,
     private dataService: DataService,
@@ -53,7 +56,7 @@ export class NewWidgetComponent implements OnInit {
     });
     this.chartForm = this.fb.group({
       title: '',
-      yAxis: ''
+      yAxis: 'points'
     });
 
     this.chart = drawChart('chart', {
@@ -66,72 +69,101 @@ export class NewWidgetComponent implements OnInit {
     });
   }
 
+  /**
+   * Push new chart to store
+   */
+  addChart() {
+    const data = this.chartForm.value;
+    data.type = this.chartType;
+    data.output = this.output;
+    data.fields = this.selectedOutputs;
+    this.store.dispatch(new AddChart(data));
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Handle cancel click
+   */
+  cancel() {
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Recreate chart by new type
+   * @param type Chart type
+   */
   changeType(type: string): void {
     this.chartType = type;
     this.recreateChart();
   }
 
+  /**
+   * Handler input change event
+   */
   changeInput(e) {
-    this.input = e.target.value;
+    // this.input = e.target.value;
     this.chart.data.datasets = this.analysisService.parseData(
       this.output,
       this.selectedOutputs,
-      this.input,
+      this.yAxis.value,
       this.chart.data.datasets.map(item => item.label)
     );
     this.chart.update();
   }
 
-  toggleOutput(output, i) {
-    const index = this.selectedOutputs.indexOf(output);
+  /**
+   * Handlecheckbox change event
+   */
+  toggleOutput(output, i, text) {
+    const data = {
+      value: output,
+      text: text
+    };
+    const index = this.selectedOutputs.findIndex(item => item.value === output);
     if (index === -1) {
-      this.selectedOutputs.push(output);
-      this.pushData(output, i);
+      this.selectedOutputs.push(data);
+      this.pushData(data, i);
     } else {
       this.selectedOutputs.splice(index, 1);
-      this.removeData(index);
+      this.removeData(index, data);
     }
     // this.generateChart();
   }
 
   private pushData(output, i) {
+    /** Get data from API */
+    let data: any = this.analysisService.getStatistic(this.output, output.value, this.yAxis.value);
+    data = {
+      data: data,
+      label: output.text,
+      fill: false,
+      borderColor: color[i],
+      backgroundColor: color[i]
+    };
     if (this.chartType === 'pie') {
-      let data: any = this.analysisService.getStatistic(this.output, output, this.input);
-      data = {
-        data: data,
-        label: this.outputs[i][fields[this.output]],
-        fill: false,
-        borderColor: color[i],
-        backgroundColor: color[i]
-      };
       this.chartData.datasets.push(data);
       this.regeneratePieChat();
     } else {
-      let data: any = this.analysisService.getStatistic(this.output, output, this.input);
-      data = {
-        data: data,
-        label: this.outputs[i][fields[this.output]],
-        fill: false,
-        borderColor: color[i],
-        backgroundColor: color[i]
-      };
       this.chart.data.datasets.push(data);
       this.chart.update();
     }
   }
 
-  private removeData(i) {
+  private removeData(i, output) {
     if (this.chartType === 'pie') {
       this.chartData.datasets.splice(i, 1);
       this.regeneratePieChat();
     } else {
       this.chart.data.datasets = this.chart.data.datasets.filter(item => {
-        return item.label !== this.outputs[i][fields[this.output]];
+        return item.label !== output.text;
       });
       this.chart.update();
     }
   }
 
+  /**
+   * Handler output change
+   */
   changeOutput(e) {
     this.output = e.target.value;
     this.outputs = this.analysisService.getOutput(this.output);
@@ -159,6 +191,10 @@ export class NewWidgetComponent implements OnInit {
     });
     const labels = this.chart.data.datasets.map(item => item.label);
     const colors = [];
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
 
     this.chart = drawChart('chart', {
       type: this.chartType,
@@ -197,6 +233,10 @@ export class NewWidgetComponent implements OnInit {
         options: this.chartOptions
       });
     }
+  }
+
+  isChecked(code) {
+    return this.selectedOutputs.findIndex(item => item.value === code) !== -1;
   }
 
   get chartOptions() {

@@ -7,4 +7,4 @@ export class LoadData implements Action {
   constructor(public payload) {}
 }
 
-export type BuildingAction = LoadData;
+export type DataAction = LoadData;
