@@ -1,7 +1,7 @@
 <div class="header py-4">
   <div class="container">
     <div class="d-flex">
-      <a class="header-brand" href="./index.html">
+      <a class="header-brand" routerLink="/">
         Project results
         <span class="text-muted" style="font-weight: 100"> | Dashboard</span>
       </a>
@@ -30,17 +30,26 @@
 
 <!-- /.header -->
 <div class="container">
-  <div class="card">
-    <div class="card-body">
-      <h2 class="text-uppercase text-thin">Member</h2>
-      <canvas id="chart-sample"></canvas>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card" *ngIf="this.charts.length === 0">
+        <div class="card-body">
+          <h2 class="text-uppercase text-thin">Member</h2>
+          <canvas id="chart-sample"></canvas>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="card" *ngFor="let chart of charts; let i = index">
-    <div class="card-body">
-      <h2 class="text-uppercase text-thin">{{ chart.title }}</h2>
-      <canvas [id]="'chart-' + i"></canvas>
+    <div
+      *ngFor="let chart of charts; let i = index"
+      [class.col-md-6]="chart.type == 'pie'"
+      [class.col-md-12]="chart.type != 'pie'"
+    >
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-uppercase text-thin">{{ chart.title }}</h2>
+          <canvas [id]="'chart-' + i"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 </div>

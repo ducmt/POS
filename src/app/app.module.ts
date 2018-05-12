@@ -4,6 +4,7 @@ import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { TableModule } from './table/table.module';
 import { AppStoreModule } from './store/store.module';
 
 @NgModule({
@@ -13,7 +14,8 @@ import { AppStoreModule } from './store/store.module';
     CoreModule,
     AppRoutingModule,
     DashboardModule,
-    AppStoreModule
+    AppStoreModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,47 @@
+<div class="container d-flex pdt-30 p-r">
+  <div class="form-group mr-20">
+    <label>Area</label>
+    <select class="form-control">
+      <option value="tokyo">Tokyo</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Store</label>
+    <select class="form-control">
+      <option value="hihi">Ahihi</option>
+    </select>
+  </div>
+  <button class="btn btn-info custom-filter">
+    <i class="fe fe-filter"></i> Customize filters
+  </button>
+</div>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header" style="padding-top: 20px; padding-bottom: 20px">
+      <button class="ml-auto btn btn-success">
+        <i class="fe fe-arrow-down"></i> Download report
+      </button>
+    </div>
+    <table class="table">
+      <tr>
+        <th>Store code</th>
+        <th>Store name</th>
+        <th>Transaction time</th>
+        <th>Member. card</th>
+        <th>Sex</th>
+        <th>Item name</th>
+        <th>Amount</th>
+      </tr>
+      <tr *ngFor="let record of records">
+        <td>{{ record.storeId }}</td>
+        <td>{{ record.storeName }}</td>
+        <td>{{ record.transactionAt }}</td>
+        <td>{{ record.memberCardNumber }}</td>
+        <td>{{ record.sex | sex }}</td>
+        <td>{{ record.productName }}</td>
+        <td>{{ record.orderAmount }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

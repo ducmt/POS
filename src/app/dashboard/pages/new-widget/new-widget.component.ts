@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppState, LoadData } from '@app/store';
 import { Store } from '@ngrx/store';
 import { DataService, AnalysisService } from '../../services';
@@ -34,6 +34,8 @@ export class NewWidgetComponent implements OnInit {
 
   chart = null;
 
+  submited = false;
+
   get yAxis() { return this.chartForm.get('yAxis'); }
 
   constructor(
@@ -55,8 +57,8 @@ export class NewWidgetComponent implements OnInit {
       }
     });
     this.chartForm = this.fb.group({
-      title: '',
-      yAxis: 'points'
+      title: ['', Validators.required],
+      yAxis: ['points', Validators.required]
     });
 
     this.chart = drawChart('chart', {
@@ -73,6 +75,10 @@ export class NewWidgetComponent implements OnInit {
    * Push new chart to store
    */
   addChart() {
+    if (this.chartForm.invalid || this.selectedOutputs.length === 0) {
+      this.submited = true;
+      return;
+    }
     const data = this.chartForm.value;
     data.type = this.chartType;
     data.output = this.output;

@@ -42,10 +42,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    drawChart('chart-sample', {
-      type: 'bar',
-      data: barChartData
-    });
+    if (this.charts.length === 0) {
+      drawChart('chart-sample', {
+        type: 'bar',
+        data: barChartData
+      });
+    }
 
     for (let i = 0; i < this.charts.length; i++) {
       const datasets = this.analysisService.getDatasets(

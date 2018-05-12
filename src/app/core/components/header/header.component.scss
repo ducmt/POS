@@ -26,7 +26,7 @@
         color: #fff;
         display: inline-block;
         position: relative;
-        &:hover {
+        &:hover, &.active {
           text-decoration: none;
           &:after {
             content: '';

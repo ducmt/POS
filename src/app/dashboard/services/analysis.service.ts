@@ -15,9 +15,12 @@ export class AnalysisService {
   }
 
   getOutput(output) {
-    return this.data.filter((value, index, a) => {
-      return a.findIndex(item => item[output] === value[output]) === index;
-    });
+    if (output) {
+      return this.data.filter((value, index, a) => {
+        return a.findIndex(item => item[output] === value[output]) === index;
+      });
+    }
+    return [];
   }
 
   parseData(output, fields, input, chartTexts) {
