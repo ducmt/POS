@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,11 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.dataService.getData().subscribe(result => console.log(result));
+  }
 
   ngAfterViewInit() {
     const data = {
@@ -21,6 +24,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         ],
       },
     };
-    generateC3(data);
+    // generateC3(data);
   }
 }

@@ -5,6 +5,8 @@ $(document).ready(function() {
   });
 });
 
-function generateC3(data) {
-  return c3.generate(data);
+function drawChart(target, options) {
+  const ctx = document.getElementById(target).getContext('2d');
+  var chart = new Chart(ctx, options);
+  return chart;
 }

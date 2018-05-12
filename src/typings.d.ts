@@ -1,6 +1,6 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
-declare function generateC3(data);
+declare function drawChart(target, options);
 interface NodeModule {
   id: string;
 }

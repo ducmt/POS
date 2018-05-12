@@ -3,6 +3,12 @@
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": [
+        "app/*"
+      ]
+    },
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,

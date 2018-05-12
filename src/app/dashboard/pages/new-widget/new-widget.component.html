@@ -1,0 +1,105 @@
+<div class="header py-4">
+  <div class="container">
+    <div class="d-flex">
+      <a class="header-brand" href="./index.html">
+        Dashboard > New widget
+      </a>
+      <div class="col-lg-4 ml-auto d-flex chart-type" style="padding-right: 0">
+        <button
+          class="btn btn-outline-secondary"
+          [class.active]="chartType === 'pie'"
+          (click)="changeType('pie')"
+        >
+          <i class="fe fe-pie-chart"></i>
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          [class.active]="chartType === 'horizontalBar'"
+          (click)="changeType('horizontalBar')"
+        >
+          <i class="fe fe-align-left"></i>
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          [class.active]="chartType === 'bar'"
+          (click)="changeType('bar')"
+        >
+          <i class="fe fe-bar-chart-2"></i>
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          [class.active]="chartType === 'line'"
+          (click)="changeType('line')"
+        >
+          <i class="fe fe-trending-up"></i>
+        </button>
+      </div>
+    </div>
+    <!-- ./d-flex -->
+  </div>
+  <!-- ./container -->
+</div>
+
+<div class="sp-20"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <form class="card" [formGroup]="chartForm">
+        <div class="card-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input class="form-control" formControlName="title">
+          </div>
+
+          <div class="form-group">
+            <label>Y Axis</label>
+            <select class="form-control" (change)="changeInput($event)">
+              <option value="points">Point</option>
+              <option value="orderAmount">Order amount</option>
+              <option value="amount">Amount</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Output</label>
+            <select class="form-control" (change)="changeOutput($event)">
+              <option value=""></option>
+              <option value="storeId">Store</option>
+              <option value="zipcode">Region</option>
+              <option value="janCode">Product</option>
+            </select>
+            <ul class="output-list">
+              <li *ngFor="let item of outputs; let i = index">
+                <label class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    (change)="toggleOutput(item[output], i)"
+                    [value]="item[output]"
+                    [checked]="selectedOutputs.indexOf(item[output]) !== -1"
+                  />
+                  <span class="custom-control-label">{{ item[outputText] }}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-footer d-flex">
+          <button class="btn" style="width: 40%">Cancel</button>
+          <button class="btn btn-primary ml-auto">
+            <i class="fe fe-plus"></i> Add to Dashboard
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h3>{{ title.value || 'Untitled' }}</h3>
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

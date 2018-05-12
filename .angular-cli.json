@@ -20,13 +20,11 @@
       "prefix": "app",
       "styles": [
         "assets/css/dashboard.css",
-        "assets/css/c3.min.css",    
         "styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/d3/dist/d3.min.js",
-        "assets/js/c3.min.js",
+        "../node_modules/chart.js/dist/Chart.min.js",
         "assets/js/app.js"
       ],
       "environmentSource": "environments/environment.ts",
