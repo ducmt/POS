@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   chartObjects = [];
 
-  labels = ['Jan', 'Fed', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // labels = ['Jan', 'Fed', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   constructor(
     private dataService: DataService,
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
 
     for (let i = 0; i < this.charts.length; i++) {
-      const datasets = this.analysisService.getDatasets(
+      const datasets = this.analysisService.getWeekDatas(
         this.charts[i].yAxis,
         this.charts[i].output,
         this.charts[i].fields
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.chartObjects[i] = drawChart('chart-' + i, {
           type: this.charts[i].type,
           data: {
-            labels: this.labels,
+            labels: this.analysisService.labels.weeks,
             datasets: datasets
           }
         });

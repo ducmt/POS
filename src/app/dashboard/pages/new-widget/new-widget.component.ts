@@ -30,7 +30,7 @@ export class NewWidgetComponent implements OnInit {
 
   outputText = '';
 
-  labels = ['Jan', 'Fed', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // labels = ['Jan', 'Fed', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   chart = null;
 
@@ -64,7 +64,7 @@ export class NewWidgetComponent implements OnInit {
     this.chart = drawChart('chart', {
       type: this.chartType,
       data: {
-        labels: this.labels,
+        labels: this.analysisService.labels.weeks,
         datasets: []
       },
       options: this.chartOptions
@@ -108,7 +108,7 @@ export class NewWidgetComponent implements OnInit {
    */
   changeInput(e) {
     // this.input = e.target.value;
-    this.chart.data.datasets = this.analysisService.parseData(
+    this.chart.data.datasets = this.analysisService.reloadWeekDataByInput(
       this.output,
       this.selectedOutputs,
       this.yAxis.value,
@@ -133,12 +133,14 @@ export class NewWidgetComponent implements OnInit {
       this.selectedOutputs.splice(index, 1);
       this.removeData(index, data);
     }
+
     // this.generateChart();
   }
 
   private pushData(output, i) {
     /** Get data from API */
-    let data: any = this.analysisService.getStatistic(this.output, output.value, this.yAxis.value);
+
+    let data: any = this.analysisService.getWeekData(this.output, output.value, this.yAxis.value);
     data = {
       data: data,
       label: output.text,
